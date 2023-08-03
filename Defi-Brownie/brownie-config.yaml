@@ -34,5 +34,3 @@ compiler:
       - "@uniswap/v3-periphery=Uniswap/v3-periphery@1.3.0"
       - "@uniswap/v3-core=Uniswap/v3-core@1.0.0"
 
-settings:
-  gas_limit: "100000000000"

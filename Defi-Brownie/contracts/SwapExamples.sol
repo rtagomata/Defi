@@ -32,27 +32,11 @@
         uint256 nonsensevar;
         uint24 public constant poolFee = 3000;
 
-        function nonsense () external
-        {
-            uint256 a = 1;
-            uint256 b = 2;
-            nonsensevar = a + b;
-            emit nonsenseemit(nonsensevar);
-                        TransferHelper.safeTransferFrom
-            (
-                WETH9, 
-                msg.sender, 
-                address(this), 
-                100
-            );
-            
-            emit safeApprove(msg.sender, address(this));
 
-            TransferHelper.safeApprove(WETH9, address(swapRouter), 100);
-        }
 
         function swapExactInputSingle(uint256 amountIn) 
             external 
+            returns (uint256 amountOut)
         {
             
             emit safeTransferFrom(msg.sender, address(this));
@@ -82,6 +66,8 @@
                 });
             emit paramInit(params.tokenIn, params.tokenOut, params.fee, params.recipient, params.deadline, params.amountIn, params.amountOutMinimum);
             // The call to `exactInputSingle` executes the swap.
+            amountOut = swapRouter.exactInputSingle(params);
+            return amountOut;
         }
 
 

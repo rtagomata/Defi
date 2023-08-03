@@ -13,28 +13,28 @@ def convert():
         print("Contract deployed.")
 
 
-        print("Approving")
         DAI = interface.IERC20(config["networks"]["goerli"]["DAI"])
         WETH = interface.IERC20(config["networks"]["goerli"]["WETH"])
-        WETHBal = WETH.balanceOf(SwapContract.address, {"from": account})
-        print(f"Swap WETH Contract balance: {WETHBal}")
+
         print("Transferring")
         WETH.transfer(SwapContract.address, amount, {"from": account, "gas_price": gasPrice})
         print("Approving")
         WETH.approve(SwapContract.address, amount, {"from": account, "gas_price": gasPrice})
-        print("Checking")
-        print(WETH.allowance(account.address, SwapContract.address, {"from": account}))
-        WETHBal = WETH.balanceOf(SwapContract.address, {"from": account})
-        print(f"Swap WETH Contract balance: {WETHBal}")
-        print("Approved!")
-
-        print("Checking account balance...")
-        daibal = DAI.balanceOf(account.address, {"from": account})
-        wethbal = WETH.balanceOf(account.address, {"from": account})
-        print(f"Account WETH Balance: {wethbal}")
-        print(f"Account DAI Balance: {daibal}")
         
         print("Testing swapExactInputSingle")
-        SwapContract.swapExactInputSingle(amount, {"from": account, "gas_price": gasPrice * 10})
+        receivedDAI1 = SwapContract.swapExactInputSingle(amount, {"from": account, "gas_price": gasPrice})
         print("Successful") 
 
+
+        print("Transferring")
+        WETH.transfer(SwapContract.address, amount, {"from": account, "gas_price": gasPrice})
+        print("Approving")
+        WETH.approve(SwapContract.address, amount, {"from": account, "gas_price": gasPrice})
+        
+        print("Testing swapExactInputSingle")
+        receivedDAI2 = SwapContract.swapExactInputSingle(amount, {"from": account, "gas_price": gasPrice})
+        print("Successful") 
+
+        print(f"Received DAI TX1: {receivedDAI1.return_value}")
+        print(f"Received DAI TX2: {receivedDAI2.return_value}")
+    
